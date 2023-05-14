@@ -1,0 +1,14 @@
+AllCops:
+  DisabledByDefault: true
+  NewCops: disable
+Layout:
+  Enabled: true
+Layout/LineLength:
+  Enabled: false
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: special_inside_parentheses
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+  Enabled: true
+Style/StringLiterals:
+  Enabled: true
