@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import _ from "lodash";
 import { Project } from "../types/project";
-import { ProjectComment } from "../types/ProjectComment";
 import CommentList from "../components/CommentList";
 
 const ProjectShowPage = (): JSX.Element => {
@@ -65,7 +65,9 @@ const ProjectShowPage = (): JSX.Element => {
       body: JSON.stringify({ project: { status: e.target.value } }),
     }).then((response) => {
       createComment(
-        `Status changed: ${project.status} -> ${e.target.value}`
+        `Status changed: ${_.capitalize(project.status)} -> ${_.capitalize(
+          e.target.value
+        )}`
       ).then((response) => {
         fetchProject();
       });
@@ -86,7 +88,7 @@ const ProjectShowPage = (): JSX.Element => {
           </Typography>
           <p>{project.description}</p>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"

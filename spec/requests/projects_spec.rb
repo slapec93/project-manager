@@ -12,120 +12,48 @@ require 'rails_helper'
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe "/projects", type: :request do
-  
+RSpec.describe '/projects', type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Project. As you add validations to Project, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  let(:project) { FactoryBot.create :project }
+  let(:user) { FactoryBot.create :user }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  before do
+    post '/login', params: {username: user.username}
+  end
 
-  describe "GET /index" do
-    it "renders a successful response" do
-      Project.create! valid_attributes
+  describe 'GET /index' do
+    it 'renders a successful response' do
       get projects_url
-      expect(response).to be_successful
+      expect(response).to have_http_status :ok
     end
   end
 
-  describe "GET /show" do
-    it "renders a successful response" do
-      project = Project.create! valid_attributes
+  describe 'GET /show' do
+    it 'renders a successful response' do
       get project_url(project)
-      expect(response).to be_successful
+      expect(response).to have_http_status :ok
     end
   end
 
-  describe "GET /new" do
-    it "renders a successful response" do
-      get new_project_url
-      expect(response).to be_successful
-    end
-  end
+  describe 'PATCH /update' do
+    subject(:patch_project) { patch project_url(project), params: {project: {status: status}} }
 
-  describe "GET /edit" do
-    it "renders a successful response" do
-      project = Project.create! valid_attributes
-      get edit_project_url(project)
-      expect(response).to be_successful
-    end
-  end
+    let(:status) { 'planned' }
 
-  describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new Project" do
-        expect {
-          post projects_url, params: { project: valid_attributes }
-        }.to change(Project, :count).by(1)
-      end
-
-      it "redirects to the created project" do
-        post projects_url, params: { project: valid_attributes }
-        expect(response).to redirect_to(project_url(Project.last))
-      end
+    it 'updates the requested project' do
+      patch_project
+      expect(project.reload).to have_attributes status: 'planned'
     end
 
-    context "with invalid parameters" do
-      it "does not create a new Project" do
-        expect {
-          post projects_url, params: { project: invalid_attributes }
-        }.to change(Project, :count).by(0)
+    context 'when status is invalid' do
+      let(:status) { 'invalid' }
+
+      it 'does not update the status of project' do
+        expect { patch_project }.to raise_error ArgumentError
+        expect(project.reload).to have_attributes status: 'started'
       end
-
-      it "renders a successful response (i.e. to display the 'new' template)" do
-        post projects_url, params: { project: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
-
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested project" do
-        project = Project.create! valid_attributes
-        patch project_url(project), params: { project: new_attributes }
-        project.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "redirects to the project" do
-        project = Project.create! valid_attributes
-        patch project_url(project), params: { project: new_attributes }
-        project.reload
-        expect(response).to redirect_to(project_url(project))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
-        project = Project.create! valid_attributes
-        patch project_url(project), params: { project: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
-
-  describe "DELETE /destroy" do
-    it "destroys the requested project" do
-      project = Project.create! valid_attributes
-      expect {
-        delete project_url(project)
-      }.to change(Project, :count).by(-1)
-    end
-
-    it "redirects to the projects list" do
-      project = Project.create! valid_attributes
-      delete project_url(project)
-      expect(response).to redirect_to(projects_url)
     end
   end
 end
