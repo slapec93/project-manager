@@ -22,7 +22,7 @@ const ProjectListPage = (): JSX.Element => {
     <>
       <Container maxWidth="md">
         <Typography variant="h4" gutterBottom component="div">
-          Active projects
+          Projects
         </Typography>
         {projects.length > 0 && <ProjectList projects={projects} />}
       </Container>

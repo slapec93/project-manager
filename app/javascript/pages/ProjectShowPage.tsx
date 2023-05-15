@@ -1,5 +1,7 @@
 import {
+  Chip,
   Container,
+  Divider,
   FormControl,
   InputLabel,
   MenuItem,
@@ -86,8 +88,17 @@ const ProjectShowPage = (): JSX.Element => {
           >
             {project.title}
           </Typography>
-          <p>{project.description}</p>
-          <FormControl fullWidth>
+          <Divider>
+            <Chip label="Description" />
+          </Divider>
+          <Typography
+            variant="body1"
+            component="div"
+            style={{ marginTop: "20px" }}
+          >
+            {project.description}
+          </Typography>
+          <FormControl style={{ marginTop: "20px" }}>
             <InputLabel id="demo-simple-select-label">Status</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -101,7 +112,20 @@ const ProjectShowPage = (): JSX.Element => {
               <MenuItem value={"finished"}>Finished</MenuItem>
             </Select>
           </FormControl>
-          <CommentList comments={project.project_comments} />
+          <Divider style={{ marginTop: "10px" }}>
+            <Chip label="Comments" />
+          </Divider>
+          <Container
+            style={{
+              marginTop: "10px",
+              padding: "5px",
+              height: "800px",
+              overflow: "scroll",
+              overflowX: "hidden",
+            }}
+          >
+            <CommentList comments={project.project_comments} />
+          </Container>
           <TextField
             style={{ paddingTop: "10px" }}
             fullWidth={true}

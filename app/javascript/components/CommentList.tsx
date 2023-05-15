@@ -17,7 +17,11 @@ const CommentList = ({ comments }: CommentListProps): JSX.Element => {
           <Paper
             key={`comment-${comment.id}`}
             elevation={2}
-            style={{ lineHeight: "60px", paddingLeft: "10px" }}
+            style={{
+              lineHeight: "40px",
+              paddingLeft: "10px",
+              marginBottom: "2px",
+            }}
           >
             <Grid container>
               <Grid
@@ -31,7 +35,7 @@ const CommentList = ({ comments }: CommentListProps): JSX.Element => {
                   {comment.user.username}
                 </Typography>
               </Grid>
-              <Grid item xs={6} textAlign={"right"}>
+              <Grid item xs={6} textAlign={"right"} paddingRight={"10px"}>
                 {createdAt.toLocaleString()}
               </Grid>
             </Grid>

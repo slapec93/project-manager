@@ -17,25 +17,29 @@ const LoginPage = (): JSX.Element => {
     });
   };
   return (
-    <>
-      <Grid container spacing={2}>
-        <Grid item xs={10}>
-          <TextField
-            fullWidth={true}
-            label="Username"
-            variant="outlined"
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <Button variant="contained" onClick={login}>
-            Login
-          </Button>
-        </Grid>
+    <Grid
+      container
+      display={"flex"}
+      flexDirection={"column"}
+      spacing={2}
+      alignItems={"center"}
+      style={{ marginTop: "200px" }}
+    >
+      <Grid item xs={10}>
+        <TextField
+          label="Username"
+          variant="outlined"
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
+        />
       </Grid>
-    </>
+      <Grid item xs={2}>
+        <Button variant="contained" onClick={login}>
+          Login
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 

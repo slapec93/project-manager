@@ -22,3 +22,6 @@ ProjectComment.create! user: me, content: 'Status change: Planned -> Started', p
 
 ProjectComment.create! user: me, content: 'Should we show the date when the comment was created on the UI?', project: project
 ProjectComment.create! user: po, content: "Yes, that's something the customer wants to see", project: project
+
+ProjectComment.create! user: me, content: 'Should we show in the project list all of the projects or do we need to filter out some (e.g. the ones with `finished` state)?', project: project
+ProjectComment.create! user: po, content: 'The project list should show all the projects in the MVP, then we can introduce filtering and apply a filter to show only the open ones by defult', project: project
