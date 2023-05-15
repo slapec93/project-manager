@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import ProjectList from "../components/ProjectList";
 import { Project } from "../types/project";
@@ -20,10 +20,12 @@ const ProjectListPage = (): JSX.Element => {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom component="div">
-        Active projects
-      </Typography>
-      {projects.length > 0 && <ProjectList projects={projects} />}
+      <Container maxWidth="md">
+        <Typography variant="h4" gutterBottom component="div">
+          Active projects
+        </Typography>
+        {projects.length > 0 && <ProjectList projects={projects} />}
+      </Container>
     </>
   );
 };

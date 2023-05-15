@@ -12,120 +12,45 @@ require 'rails_helper'
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe "/project_comments", type: :request do
-  
+RSpec.describe '/project_comments', type: :request do
   # This should return the minimal set of attributes required to create a valid
   # ProjectComment. As you add validations to ProjectComment, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  let(:project) { FactoryBot.create :project }
+  let(:project_id) { project.id }
+  let(:user) { FactoryBot.create :user }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
-
-  describe "GET /index" do
-    it "renders a successful response" do
-      ProjectComment.create! valid_attributes
-      get project_comments_url
-      expect(response).to be_successful
+  describe 'POST /create' do
+    subject(:create_comment) do
+      post "/projects/#{project_id}/project_comments.json", params: {project_comment: {content: 'anything'}, headers: {'Content-Type': 'application/json'}}
     end
-  end
 
-  describe "GET /show" do
-    it "renders a successful response" do
-      project_comment = ProjectComment.create! valid_attributes
-      get project_comment_url(project_comment)
-      expect(response).to be_successful
+    before do
+      post '/login', params: {username: user.username}
     end
-  end
 
-  describe "GET /new" do
-    it "renders a successful response" do
-      get new_project_comment_url
-      expect(response).to be_successful
+    it 'creates a new ProjectComment' do
+      expect { create_comment }.to change(ProjectComment, :count).by(1)
     end
-  end
 
-  describe "GET /edit" do
-    it "renders a successful response" do
-      project_comment = ProjectComment.create! valid_attributes
-      get edit_project_comment_url(project_comment)
-      expect(response).to be_successful
+    it 'responds with created status' do
+      create_comment
+      expect(response).to have_http_status :created
     end
-  end
 
-  describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new ProjectComment" do
+    context 'when project id is not valid' do
+      let(:project_id) { 'invalid' }
+
+      it 'does not create a new ProjectComment' do
         expect {
-          post project_comments_url, params: { project_comment: valid_attributes }
-        }.to change(ProjectComment, :count).by(1)
-      end
-
-      it "redirects to the created project_comment" do
-        post project_comments_url, params: { project_comment: valid_attributes }
-        expect(response).to redirect_to(project_comment_url(ProjectComment.last))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "does not create a new ProjectComment" do
-        expect {
-          post project_comments_url, params: { project_comment: invalid_attributes }
+          create_comment
         }.to change(ProjectComment, :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
-        post project_comments_url, params: { project_comment: invalid_attributes }
-        expect(response).to be_successful
+      it 'reponds with unprocessable entity' do
+        create_comment
+        expect(response).to have_http_status :unprocessable_entity
       end
-    end
-  end
-
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested project_comment" do
-        project_comment = ProjectComment.create! valid_attributes
-        patch project_comment_url(project_comment), params: { project_comment: new_attributes }
-        project_comment.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "redirects to the project_comment" do
-        project_comment = ProjectComment.create! valid_attributes
-        patch project_comment_url(project_comment), params: { project_comment: new_attributes }
-        project_comment.reload
-        expect(response).to redirect_to(project_comment_url(project_comment))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
-        project_comment = ProjectComment.create! valid_attributes
-        patch project_comment_url(project_comment), params: { project_comment: invalid_attributes }
-        expect(response).to be_successful
-      end
-    end
-  end
-
-  describe "DELETE /destroy" do
-    it "destroys the requested project_comment" do
-      project_comment = ProjectComment.create! valid_attributes
-      expect {
-        delete project_comment_url(project_comment)
-      }.to change(ProjectComment, :count).by(-1)
-    end
-
-    it "redirects to the project_comments list" do
-      project_comment = ProjectComment.create! valid_attributes
-      delete project_comment_url(project_comment)
-      expect(response).to redirect_to(project_comments_url)
     end
   end
 end

@@ -12,6 +12,8 @@ const LoginPage = (): JSX.Element => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username }),
+    }).then((response) => {
+      window.location = "/projects";
     });
   };
   return (

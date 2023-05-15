@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :project do
-    title { "MyString" }
+    title { 'MyString' }
+    status { :started }
   end
 end
